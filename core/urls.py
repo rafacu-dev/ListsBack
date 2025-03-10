@@ -20,6 +20,7 @@ urlpatterns = [
     path('auth/', include('djoser.social.urls')),
 
     path('user/', include('user.urls')),
+    path('lists/', include('user.lists')),
     
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
