@@ -1,5 +1,5 @@
-from djoser.serializers import ModelSerializer, PrimaryKeyRelatedField
 from lists.models import Element, List
+from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
 
 
 class ElementSerializer(ModelSerializer):
