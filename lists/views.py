@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny
 
 from lists.serializers import ListSerializer
-from lists.models import List
+from lists.models import Element, List
 
 
 
@@ -16,7 +16,19 @@ class ListAPIView(APIView):
     
     def post(self, request, *args, **kwargs):
         serializer = ListSerializer(data=request.data)
+
+        print("***********************", request.data)
         if serializer.is_valid():
-            serializer.save()
+            elements_data = request.data.get('elements')
+            user = request.user
+            list_instance = List.objects.create(
+                                                user=user, 
+                                                name=request.data.get('name'), 
+                                                category=request.data.get('category')
+                                            )
+            for element_data in elements_data:
+                element= Element.objects.create(text=element_data.get("text"))
+                list_instance.elements.add(element)
+            list_instance.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
