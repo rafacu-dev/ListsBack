@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+from django.db.models import Count
 from django.utils.dateparse import parse_datetime
 
 from lists.serializers import ListSerializer
@@ -11,7 +11,7 @@ from lists.models import Element, List
 
 class ListAPIView(APIView):
     def get(self, request, *args, **kwargs):
-        lists = List.objects.all()
+        lists = List.objects.annotate(num_elements=Count('elements')).filter(num_elements__gt=0)
         serializer = ListSerializer(lists, many=True)
         return Response(serializer.data)
     
@@ -31,7 +31,7 @@ class ListAPIView(APIView):
             for element_data in elements_data:
                 element= Element.objects.create(text=element_data.get("text"))
                 list_instance.elements.add(element)
-                
+
             list_instance.save()
             return Response(list_instance.id, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
