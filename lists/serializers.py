@@ -17,6 +17,7 @@ class ListSerializer(ModelSerializer):
     
     def create(self, validated_data):
         elements_data = validated_data.pop('elements')
+        print("*********************",self.context)
         user = self.context['request'].user
         list_instance = List.objects.create(user=user, **validated_data)
         for element_data in elements_data:
