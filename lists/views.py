@@ -11,7 +11,7 @@ from lists.models import Element, List
 
 class ListAPIView(APIView):
     def get(self, request, *args, **kwargs):
-        lists = List.objects.annotate(num_elements=Count('elements')).filter(num_elements__gt=0)
+        lists = List.objects.all().annotate(num_elements=Count('elements')).filter(num_elements__gt=0)
         serializer = ListSerializer(lists, many=True)
         return Response(serializer.data)
     
