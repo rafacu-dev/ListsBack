@@ -17,8 +17,6 @@ class ListAPIView(APIView):
     
     def post(self, request, *args, **kwargs):
         serializer = ListSerializer(data=request.data)
-
-        print("***********************", request.data)
         if serializer.is_valid():
             elements_data = request.data.get('elements')
             user = request.user
@@ -33,5 +31,5 @@ class ListAPIView(APIView):
                 element= Element.objects.create(text=element_data.get("text"))
                 list_instance.elements.add(element)
             list_instance.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(list_instance.id, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
