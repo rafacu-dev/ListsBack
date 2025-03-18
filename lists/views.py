@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
+from django.utils.dateparse import parse_datetime
 
 from lists.serializers import ListSerializer
 from lists.models import Element, List
@@ -21,10 +22,12 @@ class ListAPIView(APIView):
         if serializer.is_valid():
             elements_data = request.data.get('elements')
             user = request.user
+            date = parse_datetime(request.data.get('date'))    
             list_instance = List.objects.create(
                                                 user=user, 
                                                 name=request.data.get('name'), 
-                                                category=request.data.get('category')
+                                                category=request.data.get('category'),
+                                                date=date
                                             )
             for element_data in elements_data:
                 element= Element.objects.create(text=element_data.get("text"))
