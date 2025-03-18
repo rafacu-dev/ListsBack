@@ -20,7 +20,8 @@ class ListAPIView(APIView):
         if serializer.is_valid():
             elements_data = request.data.get('elements')
             user = request.user
-            date = parse_datetime(request.data.get('date'))    
+            date = parse_datetime(request.data.get('date'))
+            
             list_instance = List.objects.create(
                                                 user=user, 
                                                 name=request.data.get('name'), 
@@ -30,6 +31,7 @@ class ListAPIView(APIView):
             for element_data in elements_data:
                 element= Element.objects.create(text=element_data.get("text"))
                 list_instance.elements.add(element)
+                
             list_instance.save()
             return Response(list_instance.id, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
