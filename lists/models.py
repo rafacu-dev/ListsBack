@@ -14,6 +14,7 @@ class List(models.Model):
     name = models.CharField(max_length=255)
     language = models.CharField(max_length=255)
     hashtags = models.CharField(max_length=255, blank=True, null=True)
+    visible = models.BooleanField(default=False)
     category = models.CharField(max_length=100)
     elements = models.ManyToManyField(Element)
     date = models.DateTimeField()

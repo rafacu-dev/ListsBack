@@ -18,7 +18,7 @@ class ListAPIView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = ListSerializer(data=request.data)
         print("**********************",request.data)
-        
+
         if serializer.is_valid():
             elements_data = request.data.get('elements')
             user = request.user
@@ -28,6 +28,7 @@ class ListAPIView(APIView):
                                                 user=user, 
                                                 name=request.data.get('name'), 
                                                 language=request.data.get('language'), 
+                                                visible= True if request.data.get('visibility') != "private" else False, 
                                                 hashtags=request.data.get('hashtags'), 
                                                 category=request.data.get('category'),
                                                 date=date
