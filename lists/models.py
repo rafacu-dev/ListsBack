@@ -12,6 +12,9 @@ class Element(models.Model):
 class List(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
+    language = models.CharField(max_length=255)
+    visibility = models.CharField(max_length=255)
+    hashtags = models.CharField(max_length=255)
     category = models.CharField(max_length=100)
     elements = models.ManyToManyField(Element)
     date = models.DateTimeField()
