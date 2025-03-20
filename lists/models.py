@@ -19,3 +19,8 @@ class List(models.Model):
     elements = models.ManyToManyField(Element)
     date = models.DateTimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+class Inspired(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    list = models.ForeignKey(List, on_delete=models.CASCADE)
