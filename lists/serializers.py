@@ -19,4 +19,4 @@ class ListSerializer(ModelSerializer):
         fields = ['id', 'name', 'category', 'elements', 'date', 'user', "inspired"]
     
     def get_inspired(self,l:List):
-        return Inspired.objects.filter(uslist = l).count()
+        return Inspired.objects.filter(list = l).count()
