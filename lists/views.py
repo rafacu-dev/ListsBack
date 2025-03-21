@@ -98,5 +98,5 @@ class InspiredAPIView(APIView):
 class ConfigAPIView(APIView):
     def get(self, request, *args, **kwargs):
         return Response({
-            "min_version":2
+            "min_version":1
         }, status=status.HTTP_201_CREATED)
