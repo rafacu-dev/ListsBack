@@ -1,7 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django.db.models import Count
+from django.contrib.postgres.search import SearchVector
+from django.db.models import Count, Q
 from django.utils.dateparse import parse_datetime
 
 from lists.serializers import ListSerializer
@@ -11,7 +12,28 @@ from lists.models import Element, Inspired, List
 
 class ListAPIView(APIView):
     def get(self, request, *args, **kwargs):
-        lists = List.objects.all().annotate(num_elements=Count('elements')).filter(num_elements__gt=0)
+        search = self.request.GET.get("search")
+        lists = List.objects.all().annotate(num_elements=Count('elements')).filter(num_elements__gt=0).exclude(user=request.user)
+
+        if search:
+            #lists = lists.annotate(search=SearchVector('name', 'language', 'hashtags', 'category')).filter(search=search)
+            
+            lists = lists.filter(
+                Q(name__icontains=search) |
+                Q(language__icontains=search) |
+                Q(hashtags__icontains=search) |
+                Q(category__icontains=search)
+            ).annotate(
+                relevance=Count(
+                    'elements',
+                    filter=Q(name__icontains=search) | 
+                        Q(language__icontains=search) | 
+                        Q(hashtags__icontains=search) | 
+                        Q(category__icontains=search)
+                )
+            ).order_by('-relevance')
+
+
         serializer = ListSerializer(lists, many=True)
         return Response(serializer.data)
     
