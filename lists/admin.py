@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from lists.models import Element, List, Inspired
+
+admin.site.register(Element)
+admin.site.register(List)
+admin.site.register(Inspired)
