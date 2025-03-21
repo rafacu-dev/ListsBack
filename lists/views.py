@@ -92,3 +92,11 @@ class InspiredAPIView(APIView):
         list_instance = List.objects.get(id=listId)
         inspired = Inspired.objects.create(list = list_instance, user = request.user)
         return Response(True, status=status.HTTP_201_CREATED)
+    
+
+    
+class ConfigAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        return Response({
+            "min_version":2
+        }, status=status.HTTP_201_CREATED)
