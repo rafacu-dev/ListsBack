@@ -59,7 +59,7 @@ class InspiredAPIView(APIView):
         listIds = listId.split(",")
         listReturn = []
         for id in listIds:
-            listReturn.append(Inspired.objects.filter(list__id=listIds).count())
+            listReturn.append(Inspired.objects.filter(list__id=id).count())
 
         return Response(listReturn)
     
