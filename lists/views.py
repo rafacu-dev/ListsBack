@@ -14,7 +14,7 @@ class ListAPIView(APIView):
     def get(self, request, *args, **kwargs):
         search = self.request.GET.get("search")
         lists = List.objects.all().annotate(num_elements=Count('elements')).filter(num_elements__gt=0)
-        if request.user: lists = lists.exclude(user=request.user)
+        if request.user.is_authenticated: lists = lists.exclude(user=request.user)
 
         if search:
             #lists = lists.annotate(search=SearchVector('name', 'language', 'hashtags', 'category')).filter(search=search)
