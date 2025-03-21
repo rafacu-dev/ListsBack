@@ -32,6 +32,15 @@ class ListAPIView(APIView):
                         Q(hashtags__icontains=search) | 
                         Q(category__icontains=search)
                 )
+            ).annotate(
+                relevance=Count(
+                    'elements',
+                    filter=Q(name__icontains=search) | 
+                        Q(language__icontains=search) | 
+                        Q(hashtags__icontains=search) | 
+                        Q(category__icontains=search) |
+                        Q(elements__text__icontains=search)  # Contar relevancia en elementos
+                )
             ).order_by('-relevance')
 
 
