@@ -1,7 +1,8 @@
 from django.urls import path
 
-from lists.views import (ListAPIView)
+from lists.views import (ListAPIView, InspiredAPIView)
 
 urlpatterns = [
-    path('', ListAPIView.as_view(),),
+    path('', ListAPIView.as_view()),
+    path('inspired/<int:listId>/', InspiredAPIView.as_view()),
 ]

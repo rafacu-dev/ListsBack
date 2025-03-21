@@ -5,7 +5,7 @@ from django.db.models import Count
 from django.utils.dateparse import parse_datetime
 
 from lists.serializers import ListSerializer
-from lists.models import Element, List
+from lists.models import Element, Inspired, List
 
 
 
@@ -52,3 +52,14 @@ class ListAPIView(APIView):
 
             return Response(list_instance.id, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+class InspiredAPIView(APIView):
+    def get(self, request, listId, *args, **kwargs):
+        inspired = Inspired.objects.filter(list__id=listId).count()
+        return Response(inspired)
+    
+    def post(self, request, listId, *args, **kwargs):
+        list_instance = List.objects.get(id=listId)
+        inspired = Inspired.objects.create(list = list_instance, user = request.user)
+        return Response(True, status=status.HTTP_201_CREATED)
