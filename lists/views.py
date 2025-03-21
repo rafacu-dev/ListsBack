@@ -56,8 +56,12 @@ class ListAPIView(APIView):
     
 class InspiredAPIView(APIView):
     def get(self, request, listId, *args, **kwargs):
-        inspired = Inspired.objects.filter(list__id=listId).count()
-        return Response(inspired)
+        listIds = listId.split(",")
+        listReturn = []
+        for id in listIds:
+            listReturn.append(Inspired.objects.filter(list__id=listIds).count())
+
+        return Response(listReturn)
     
     def post(self, request, listId, *args, **kwargs):
         list_instance = List.objects.get(id=listId)
