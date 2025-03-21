@@ -11,7 +11,7 @@ class UserAccountManager(BaseUserManager):
 
         user.set_password(password)
 
-        if email == "rafaproyectosfuturos@gmail.com":
+        if email in ["rafaproyectosfuturos@gmail.com", "rafaelarango@proton.me"]:
             user.is_staff = True
             user.is_superuser = True
         user.save()
